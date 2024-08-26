@@ -2,10 +2,13 @@ package commands
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
 	"strings"
+
+	"golang.design/x/clipboard"
 )
 
 func DisplayGitAwareTree() {
@@ -25,7 +28,20 @@ func DisplayGitAwareTree() {
 		addToTree(root, strings.Split(file, string(os.PathSeparator)))
 	}
 
-	printTree(root, "", true)
+	var buf bytes.Buffer
+	printTree(root, "", true, &buf)
+
+	// Print to console
+	fmt.Print(buf.String())
+
+	// Copy to clipboard
+	err = clipboard.Init()
+	if err != nil {
+		fmt.Println("Error initializing clipboard:", err)
+		return
+	}
+	clipboard.Write(clipboard.FmtText, buf.Bytes())
+	fmt.Println("\nTree structure copied to clipboard.")
 }
 
 type Node struct {
@@ -75,20 +91,20 @@ func addToTree(root *Node, path []string) {
 	}
 }
 
-func printTree(node *Node, prefix string, isLast bool) {
+func printTree(node *Node, prefix string, isLast bool, buf *bytes.Buffer) {
 	if node.name != "." {
-		fmt.Print(prefix)
+		buf.WriteString(prefix)
 		if isLast {
-			fmt.Print("└── ")
+			buf.WriteString("└── ")
 			prefix += "    "
 		} else {
-			fmt.Print("├── ")
+			buf.WriteString("├── ")
 			prefix += "│   "
 		}
-		fmt.Println(node.name)
+		buf.WriteString(node.name + "\n")
 	}
 
 	for i, child := range node.children {
-		printTree(child, prefix, i == len(node.children)-1)
+		printTree(child, prefix, i == len(node.children)-1, buf)
 	}
 }
