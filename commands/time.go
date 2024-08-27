@@ -2,11 +2,12 @@ package commands
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
 func DisplayTime(args []string) {
-	if len(args) > 0 && args[0] == "UTC" {
+	if len(args) > 0 && strings.ToLower(args[0]) == "utc" {
 		displayUTCTime()
 	} else {
 		displayLocalTime()
