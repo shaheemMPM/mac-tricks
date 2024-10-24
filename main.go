@@ -16,6 +16,8 @@ func main() {
 			commands.DisplayGitAwareTree()
 		case "time":
 			commands.DisplayTime(os.Args[2:])
+		case "clean-nm":
+			commands.CleanNodeModules()
 		default:
 			fmt.Println("Unknown command")
 		}
@@ -26,6 +28,7 @@ func main() {
 	fmt.Println("1. Clear Stremio cache (cc-stremio)")
 	fmt.Println("2. Show git file tree (git-tree)")
 	fmt.Println("3. Display current time (time)")
+	fmt.Println("4. Clean node_modules directories (clean-nm)")
 
 	var option string
 	fmt.Print("Enter option number: ")
@@ -38,6 +41,8 @@ func main() {
 		commands.DisplayGitAwareTree()
 	case "3":
 		commands.DisplayTime(nil)
+	case "4":
+		commands.CleanNodeModules()
 	default:
 		fmt.Println("Invalid option")
 	}
