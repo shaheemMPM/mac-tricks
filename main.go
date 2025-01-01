@@ -12,12 +12,12 @@ func main() {
 		switch os.Args[1] {
 		case "cc-stremio":
 			commands.ClearStremioCache()
-		case "git-tree":
-			commands.DisplayGitAwareTree()
 		case "time":
 			commands.DisplayTime(os.Args[2:])
 		case "clean-nm":
 			commands.CleanNodeModules()
+		case "amend-date":
+			commands.AmendDate(os.Args[2:])
 		default:
 			fmt.Println("Unknown command")
 		}
@@ -26,9 +26,9 @@ func main() {
 
 	fmt.Println("Available options:")
 	fmt.Println("1. Clear Stremio cache (cc-stremio)")
-	fmt.Println("2. Show git file tree (git-tree)")
 	fmt.Println("3. Display current time (time)")
 	fmt.Println("4. Clean node_modules directories (clean-nm)")
+	fmt.Println("5. Amend last commit date (amend-date)")
 
 	var option string
 	fmt.Print("Enter option number: ")
@@ -37,12 +37,12 @@ func main() {
 	switch option {
 	case "1":
 		commands.ClearStremioCache()
-	case "2":
-		commands.DisplayGitAwareTree()
 	case "3":
 		commands.DisplayTime(nil)
 	case "4":
 		commands.CleanNodeModules()
+	case "5":
+		commands.AmendDate(nil)
 	default:
 		fmt.Println("Invalid option")
 	}
